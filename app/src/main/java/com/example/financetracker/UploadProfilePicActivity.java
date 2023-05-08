@@ -3,6 +3,7 @@ package com.example.financetracker;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import android.content.ContentResolver;
 import android.content.Intent;
@@ -45,6 +46,7 @@ public class UploadProfilePicActivity extends AppCompatActivity {
         setContentView(R.layout.activity_upload_profile_pic);
 
         getSupportActionBar().setTitle("Upload Profile Picture");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Button buttonUploadPicChoose = findViewById(R.id.upload_pic_choose_button);
         Button buttonUploadPic = findViewById(R.id.upload_pic_button);
@@ -102,7 +104,7 @@ public class UploadProfilePicActivity extends AppCompatActivity {
         if (uriImage != null){
 
             //Save the image with uid of the currently logged user
-            StorageReference fileReference = storageReference.child(authProfile.getCurrentUser().getUid() + "."
+            StorageReference fileReference = storageReference.child(authProfile.getCurrentUser().getUid() + "/displypic."
             + getFileExtension(uriImage));
 
             //Upload image to Storage
@@ -163,26 +165,32 @@ public class UploadProfilePicActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id==R.id.menu_refresh){
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(UploadProfilePicActivity.this);
+        } else if(id==R.id.menu_refresh){
             //Refresh Activity
             startActivity(getIntent());
             finish();
             overridePendingTransition(0,0);
-        } /*else if (id == R.id.menu_update_profile) {
-            Intent intent = new Intent(UserProfileActivity.this, UpdateProfileActivity.class);
+        } else if (id == R.id.menu_update_profile) {
+            Intent intent = new Intent(UploadProfilePicActivity.this, UpdateProfileActivity.class);
             startActivity(intent);
+            finish();
         } else if (id == R.id.menu_update_email) {
-            Intent intent = new Intent(UserProfileActivity.this, UpdateProfileActivity.class);
+            Intent intent = new Intent(UploadProfilePicActivity.this, UpdateProfileActivity.class);
             startActivity(intent);
+            finish();
         } else if (id == R.id.menu_settings) {
-            Toast.makeText(UserProfileActivity.this, "menu_settings", Toast.LENGTH_SHORT).show();
+            Toast.makeText(UploadProfilePicActivity.this, "menu_settings", Toast.LENGTH_SHORT).show();
         } else if (id == R.id.menu_change_password) {
-            Intent intent = new Intent(UserProfileActivity.this, ChangePasswordActivity.class);
+            Intent intent = new Intent(UploadProfilePicActivity.this, ChangePasswordActivity.class);
             startActivity(intent);
-        } else if (id == R.id.menu_delete_profile) {
-            Intent intent = new Intent(UserProfileActivity.this, DeleteProfileActivity.class);
+            finish();
+        }   else if (id == R.id.menu_delete_profile) {
+            Intent intent = new Intent(UploadProfilePicActivity.this, DeleteProfileActivity.class);
             startActivity(intent);
-        } */else if (id == R.id.menu_logout) {
+            finish();
+        }   else if (id == R.id.menu_logout) {
             authProfile.signOut();
             Toast.makeText(UploadProfilePicActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(UploadProfilePicActivity.this, MainActivity.class);

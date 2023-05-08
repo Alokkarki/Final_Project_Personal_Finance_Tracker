@@ -3,6 +3,8 @@ package com.example.financetracker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,6 +34,7 @@ public class UserProfileActivity extends AppCompatActivity {
     private String fullName, email, doB, gender, mobile;
     private ImageView imageView;
     private FirebaseAuth authProfile;
+    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,9 @@ public class UserProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
 
         getSupportActionBar().setTitle("Home");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        swipeToRefresh();
 
         textViewWelcome = findViewById(R.id.textView_show_welcome);
         textViewFullName = findViewById(R.id.textView_show_full_name);
@@ -70,6 +76,27 @@ public class UserProfileActivity extends AppCompatActivity {
         }
 
 
+    }
+
+    private void swipeToRefresh() {
+        //Look up for Swipe Container
+        swipeContainer = findViewById(R.id.swipeContainer);
+
+        //Setup Refresh listener which triggers new data loading
+        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //Code to refresh goes here.Make sure to call swipeContainer.setRefresh(false) once the refresh is completed
+                startActivity(getIntent());
+                finish();
+                overridePendingTransition(0, 0);
+                swipeContainer.setRefreshing(false);
+            }
+        });
+
+        //Configure refresh colors
+        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright, android.R.color.holo_green_light,
+                android.R.color.holo_orange_light, android.R.color.holo_red_light);
     }
 
     //User coming to UserProfileActivity after successful registration
@@ -159,12 +186,14 @@ public class UserProfileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id==R.id.menu_refresh){
+        if (id == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(UserProfileActivity.this);
+        } else if (id==R.id.menu_refresh){
             //Refresh Activity
             startActivity(getIntent());
             finish();
             overridePendingTransition(0,0);
-        } /*else if (id == R.id.menu_update_profile) {
+        } else if (id == R.id.menu_update_profile) {
             Intent intent = new Intent(UserProfileActivity.this, UpdateProfileActivity.class);
             startActivity(intent);
         } else if (id == R.id.menu_update_email) {
@@ -175,10 +204,10 @@ public class UserProfileActivity extends AppCompatActivity {
         } else if (id == R.id.menu_change_password) {
             Intent intent = new Intent(UserProfileActivity.this, ChangePasswordActivity.class);
             startActivity(intent);
-        } else if (id == R.id.menu_delete_profile) {
+        }  else if (id == R.id.menu_delete_profile) {
             Intent intent = new Intent(UserProfileActivity.this, DeleteProfileActivity.class);
             startActivity(intent);
-        } */else if (id == R.id.menu_logout) {
+        }   else if (id == R.id.menu_logout) {
             authProfile.signOut();
             Toast.makeText(UserProfileActivity.this, "Logged Out", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(UserProfileActivity.this, MainActivity.class);

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:padding="15dp"
-        android:background="@color/white">
+        android:background="@drawable/border">
 
 
         <ImageView
@@ -37,23 +37,31 @@
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"/>
 
         <Button
-            android:layout_width="match_parent"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:id="@+id/button_login"
             android:text="Login"
-            android:layout_marginTop="100dp"
-            android:layout_below="@id/textView_main_head"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"/>
+            android:layout_marginTop="50dp"
+            android:layout_below="@id/textView_main_head"/>
 
-        <Button
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/button_register"
-            android:text="Register"
-            android:layout_below="@id/button_login"
-            android:layout_marginLeft="70dp"
-            android:layout_marginRight="70dp"/>
+            android:id="@+id/textView_register"
+            android:layout_marginTop="30dp"
+            android:text="Do Not have an account"
+            android:textAlignment="center"
+            android:layout_below="@id/button_login"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView_register_link"
+            android:text="@string/register"
+            android:textColor="@color/purple_700"
+            android:textAlignment="center"
+            android:layout_below="@id/textView_register"/>
 
 
 

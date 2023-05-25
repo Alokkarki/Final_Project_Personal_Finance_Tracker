@@ -20,6 +20,11 @@
         android:icon="@drawable/search_income">
 
     </item>
+    <item android:id="@+id/search_income_type"
+        android:title="Search Income By Type"
+        android:icon="@drawable/search_income">
+
+    </item>
     <item android:id="@+id/expense"
         android:title="Expense"
         android:icon="@drawable/ic_expense">
@@ -27,6 +32,11 @@
     </item>
     <item android:id="@+id/search_expense"
         android:title="Search Expense"
+        android:icon="@drawable/search_expense">
+
+    </item>
+    <item android:id="@+id/search_expense_type"
+        android:title="Search Expense By Type"
         android:icon="@drawable/search_expense">
 
     </item>

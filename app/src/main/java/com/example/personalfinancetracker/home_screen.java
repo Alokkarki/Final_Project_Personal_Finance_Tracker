@@ -32,7 +32,6 @@ public class home_screen extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
@@ -40,8 +39,23 @@ public class home_screen extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         mDialog = new ProgressDialog(this);
 
-        loginDetails();
+        // Check if the user is already logged in
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser != null) {
+            // User is already logged in, open the first_home_page activity
+            openFirstHomePage();
+        } else {
+            // User is not logged in, proceed with the login process
+            loginDetails();
+        }
     }
+
+    private void openFirstHomePage() {
+        Intent intent = new Intent(home_screen.this, first_home_page.class);
+        startActivity(intent);
+        finish(); // Optional: Finish the home_screen activity so the user can't navigate back to it
+    }
+
 
     private void loginDetails() {
         mEmail = findViewById(R.id.email_login);
@@ -49,35 +63,35 @@ public class home_screen extends AppCompatActivity {
         Button btnLogin = findViewById(R.id.btn_login);
         TextView mforget_password = findViewById(R.id.forgot_password);
         TextView mSignUpHere = findViewById(R.id.signup_reg);
-        remember = findViewById(R.id.checkBox2);
+//        remember = findViewById(R.id.checkBox2);
 
-        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-        String checkbox = preferences.getString("remember", "");
-        if (checkbox.equals("true")) {
-            Intent intent = new Intent(home_screen.this, first_home_page.class);
-            startActivity(intent);
-        } else if (!checkbox.equals("false")) {
+//        SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+//        String checkbox = preferences.getString("remember", "");
+//        if (checkbox.equals("true")) {
+//            Intent intent = new Intent(home_screen.this, first_home_page.class);
+//            startActivity(intent);
+//        } else if (!checkbox.equals("false")) {
+//
+//        }
 
-        }
-
-        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (buttonView.isChecked()) {
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "true");
-                    editor.apply();
-                    Toast.makeText(home_screen.this, "Remember me Checked..", Toast.LENGTH_SHORT).show();
-                } else if (!buttonView.isChecked()) {
-                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putString("remember", "false");
-                    editor.apply();
-                    Toast.makeText(home_screen.this, "Remember me Unchecked..", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        remember.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (buttonView.isChecked()) {
+//                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = preferences.edit();
+//                    editor.putString("remember", "true");
+//                    editor.apply();
+//                    Toast.makeText(home_screen.this, "Remember me Checked..", Toast.LENGTH_SHORT).show();
+//                } else if (!buttonView.isChecked()) {
+//                    SharedPreferences preferences = getSharedPreferences("checkbox", MODE_PRIVATE);
+//                    SharedPreferences.Editor editor = preferences.edit();
+//                    editor.putString("remember", "false");
+//                    editor.apply();
+//                    Toast.makeText(home_screen.this, "Remember me Unchecked..", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         mSignUpHere.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -140,6 +154,5 @@ public class home_screen extends AppCompatActivity {
             mAuth.signOut();
         }
     }
-
 
 }

@@ -192,6 +192,11 @@ public class first_home_page extends AppCompatActivity implements NavigationView
                 startActivity(intent_inc);
                 break;
 
+            case R.id.search_income_type:
+                Intent intent_inct=new Intent(getApplicationContext(),searchdata_type.class);
+                startActivity(intent_inct);
+                break;
+
             case R.id.expense:
                 fragment=new ExpenseFragment();
                 break;
@@ -199,6 +204,11 @@ public class first_home_page extends AppCompatActivity implements NavigationView
             case R.id.search_expense:
                 Intent intent_exp=new Intent(getApplicationContext(),searchdata2.class);
                 startActivity(intent_exp);
+                break;
+
+            case R.id.search_expense_type:
+                Intent intent_expt=new Intent(getApplicationContext(),searchdata_type2.class);
+                startActivity(intent_expt);
                 break;
 
 //            case R.id.income_tax_emi:
@@ -253,23 +263,7 @@ public class first_home_page extends AppCompatActivity implements NavigationView
                 break;
 
             case R.id.logout:
-                AlertDialog.Builder builder=new AlertDialog.Builder(first_home_page.this);
-                builder.setTitle("Logout");
-                builder.setMessage("Do you really want to Logout?");
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        finishAffinity();
-                        startActivity(new Intent(getApplicationContext(),home_screen.class));
-                    }
-                });
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                });
-                builder.show();
+                logout();
                 break;
         }
         if(fragment!=null){
@@ -280,6 +274,28 @@ public class first_home_page extends AppCompatActivity implements NavigationView
 
         DrawerLayout drawerLayout=findViewById(R.id.drawer_layout);
         drawerLayout.closeDrawer(GravityCompat.START);
+    }
+
+    private void logout() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(first_home_page.this);
+        builder.setTitle("Logout");
+        builder.setMessage("Do you really want to Logout?");
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mAuth.signOut();
+                Intent intent = new Intent(first_home_page.this, home_screen.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

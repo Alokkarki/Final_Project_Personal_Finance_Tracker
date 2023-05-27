@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,12 +17,15 @@
         android:theme="@style/Theme.PersonalFinanceTracker"
         tools:targetApi="31">
         <activity
+            android:name=".editprofile"
+            android:exported="false" />
+        <activity
             android:name=".searchdata_type"
             android:exported="false"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
-        <activity android:name=".searchdata_type2"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
-
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
+        <activity
+            android:name=".searchdata_type2"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".NextIncome"
             android:exported="false"
@@ -58,9 +66,9 @@
             android:name=".searchdata"
             android:exported="false"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
-        <activity android:name=".searchdata2"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
-
+        <activity
+            android:name=".searchdata2"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
         <activity
             android:name=".first_home_page"
             android:exported="false"

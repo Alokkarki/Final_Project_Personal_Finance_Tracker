@@ -26,9 +26,10 @@ import com.google.firebase.database.ValueEventListener;
 public class Profile extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
+    private DatabaseReference mDatabase;
 
-    Button changepass;
-    Button deleteaccount;
+    TextView nameTextView, dobTextView, phoneTextView, genderTextView;
+    Button changepass, deleteaccount, editprofile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +47,23 @@ public class Profile extends AppCompatActivity {
             }
         }
 
+        mDatabase = FirebaseDatabase.getInstance().getReference("usersData").child(mAuth.getCurrentUser().getUid());
+
+        nameTextView = findViewById(R.id.name_profile);
+        dobTextView = findViewById(R.id.dob_profile);
+        phoneTextView = findViewById(R.id.phone_profile);
+        genderTextView = findViewById(R.id.gender_profile);
         changepass = findViewById(R.id.btn_changepass);
         deleteaccount = findViewById(R.id.btn_deleteaccount);
+        editprofile = findViewById(R.id.btn_editprofile);
+
+        editprofile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Profile.this, editprofile.class);
+                startActivity(intent);
+            }
+        });
 
         changepass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,4 +119,38 @@ public class Profile extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        // Fetch user data from Firebase and set the values to TextViews
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String name = dataSnapshot.child("name").getValue(String.class);
+                    String dob = dataSnapshot.child("dob").getValue(String.class);
+                    String phoneNumber = dataSnapshot.child("phoneNumber").getValue(String.class);
+                    String gender = dataSnapshot.child("gender").getValue(String.class);
+
+                    if (name != null)
+                        nameTextView.setText(name);
+
+                    if (dob != null)
+                        dobTextView.setText(dob);
+
+                    if (phoneNumber != null)
+                        phoneTextView.setText(phoneNumber);
+
+                    if (gender != null)
+                        genderTextView.setText(gender);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Profile.this, "Failed to fetch user data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }

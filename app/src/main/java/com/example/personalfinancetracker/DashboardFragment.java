@@ -77,6 +77,8 @@ public class DashboardFragment extends Fragment {
     private RecyclerView mRecyclerIncome;
     private RecyclerView mRecyclerExpense;
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

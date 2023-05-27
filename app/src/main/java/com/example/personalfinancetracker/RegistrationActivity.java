@@ -97,7 +97,7 @@ public class RegistrationActivity extends AppCompatActivity {
                         else {
                             mDialog.dismiss();
 
-                            Toast.makeText(getApplicationContext(),"Registration failed..",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(),"Registration failed. Email already registered",Toast.LENGTH_SHORT).show();
 
                         }
                     }

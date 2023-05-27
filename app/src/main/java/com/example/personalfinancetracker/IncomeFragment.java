@@ -8,12 +8,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.personalfinancetracker.Model.Data;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -204,21 +206,20 @@ public class IncomeFragment extends Fragment {
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                type=edtType.getText().toString().trim();
-                note=edtNote.getText().toString().trim();
+                type = edtType.getText().toString().trim();
+                note = edtNote.getText().toString().trim();
+                String mdAmount = edtAmount.getText().toString().trim();
 
-                String mdAmount=String.valueOf(amount);
-                mdAmount=edtAmount.getText().toString().trim();
-
-                int myAmount=Integer.parseInt(mdAmount);
-
-                String mDate= DateFormat.getDateInstance().format(new Date());
-
-                Data data=new Data(myAmount,type,note,post_key,mDate);
-
-                mIncomeDatabase.child(post_key).setValue(data);
-
-                dialog.dismiss();
+                // Check if the amount is numeric
+                if (!TextUtils.isEmpty(mdAmount) && TextUtils.isDigitsOnly(mdAmount)) {
+                    int myAmount = Integer.parseInt(mdAmount);
+                    String mDate = DateFormat.getDateInstance().format(new Date());
+                    Data data = new Data(myAmount, type, note, post_key, mDate);
+                    mIncomeDatabase.child(post_key).setValue(data);
+                    dialog.dismiss();
+                } else {
+                    Toast.makeText(getActivity(), "Please enter a valid numeric amount", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

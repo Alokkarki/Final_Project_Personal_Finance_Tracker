@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,13 @@ import android.widget.Toast;
 import com.example.personalfinancetracker.Model.Data;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,9 +41,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 
-
+import java.io.FileOutputStream;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,7 +54,19 @@ import java.util.Date;
 
 
 
+
+
+
 public class DashboardFragment extends Fragment {
+
+
+    BarChart barChart;
+    BarData barData;
+    BarDataSet barDataSet;
+    ArrayList barEntries;
+    final String[] date=new String[10000000];
+
+
 
 
     //Floating button
@@ -76,6 +99,8 @@ public class DashboardFragment extends Fragment {
 
     private RecyclerView mRecyclerIncome;
     private RecyclerView mRecyclerExpense;
+
+
 
 
 
@@ -119,6 +144,33 @@ public class DashboardFragment extends Fragment {
         FadClose=AnimationUtils.loadAnimation(getActivity(),R.anim.fab_close);
         Rob=AnimationUtils.loadAnimation(getActivity(),R.anim.rotate_backward);
         Rof=AnimationUtils.loadAnimation(getActivity(),R.anim.rotate_forward);
+
+        barChart=myview.findViewById(R.id.bar_chart);
+        ValueEventListener event2=new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                getBarEntries(snapshot);
+                barDataSet=new BarDataSet(barEntries,"Expenses");
+                barData=new BarData(barDataSet);
+                barChart.setData(barData);
+                barChart.getDescription().setText("Expenses Per Day");
+                XAxis xval=barChart.getXAxis();
+                xval.setDrawLabels(true);
+                xval.setValueFormatter(new IndexAxisValueFormatter(date));
+                barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+                barDataSet.setValueTextColor(Color.BLACK);
+                barDataSet.setValueTextSize(16f);
+                barDataSet.notifyDataSetChanged();
+                barChart.notifyDataSetChanged();
+                barChart.invalidate();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        mExpenseDatabase.addListenerForSingleValueEvent(event2);
 
 
         fab_main.setOnClickListener(new View.OnClickListener() {
@@ -262,7 +314,12 @@ public class DashboardFragment extends Fragment {
         mRecyclerExpense.setHasFixedSize(true);
         mRecyclerExpense.setLayoutManager(layoutManagerExpense);
 
+
+
+        
         return myview;
+
+        
     }
 
     private void ftAnimation(){
@@ -548,6 +605,34 @@ public class DashboardFragment extends Fragment {
         }
     }
 
+
+    private void getBarEntries(DataSnapshot snap)
+    {
+
+        Log.d("ExpenseData","Reading Data");
+
+        barEntries=new ArrayList();
+
+        float a=1f;
+        int a1=1;
+        if(snap.exists()) {
+            for (DataSnapshot ds : snap.getChildren()) {
+                Data data = ds.getValue(Data.class);
+                //String date = data.getDate();
+                date[a1]=data.getDate().substring(0,7);
+
+                float amm = data.getAmount();
+                //String name=ds.child(data.getId()).child("type").getValue(String.class);
+
+                //Data data=ds.getValue(Data.class);
+                //String name=data.getType();
+                barEntries.add(new BarEntry(a,amm));
+
+                a=a+1;
+                a1=a1+1;
+            }
+        }
+    }
 
 
 

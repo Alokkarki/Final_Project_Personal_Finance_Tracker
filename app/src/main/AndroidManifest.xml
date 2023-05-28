@@ -14,9 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PersonalFinanceTracker"
         tools:targetApi="31">
-        <activity
-            android:name=".SearchTransaction"
-            android:exported="false" />
+
         <activity
             android:name=".editprofile"
             android:exported="false"

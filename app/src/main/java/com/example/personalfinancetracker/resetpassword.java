@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -31,35 +32,42 @@ public class resetpassword extends AppCompatActivity {
         resetpassword=(Button)findViewById(R.id.reset_pass);
         firebaseAuth= FirebaseAuth.getInstance();
 
+        // ...
+
         resetpassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String useremail=passwordEmail.getText().toString().trim();
+                String useremail = passwordEmail.getText().toString().trim();
 
-                if(useremail.equals(""))
-                {
-                    passwordEmail.setError("Email Required...",null);
+                if (useremail.equals("")) {
+                    passwordEmail.setError("Email Required...", null);
                     return;
-                }
-                else
-                {
+                } else if (!isValidEmail(useremail)) {
+                    passwordEmail.setError("Invalid Email Address", null);
+                    return;
+                } else {
                     firebaseAuth.sendPasswordResetEmail(useremail).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
-                            if(task.isSuccessful())
-                            {
-                                Toast.makeText(resetpassword.this,"Email sent successfully..",Toast.LENGTH_LONG).show();
+                            if (task.isSuccessful()) {
+                                Toast.makeText(resetpassword.this, "Email sent successfully..", Toast.LENGTH_LONG).show();
+                                firebaseAuth.signOut(); // Sign out the user
                                 finish();
-                                startActivity(new Intent(resetpassword.this,MainActivity.class));
-                            }
-                            else
-                            {
-                                Toast.makeText(resetpassword.this,"Error sending email..",Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(resetpassword.this, MainActivity.class));
+                            } else {
+                                Toast.makeText(resetpassword.this, "Error sending email..", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
                 }
             }
         });
+
+
+
+    }
+
+    private boolean isValidEmail(CharSequence target) {
+        return !TextUtils.isEmpty(target) && android.util.Patterns.EMAIL_ADDRESS.matcher(target).matches();
     }
 }

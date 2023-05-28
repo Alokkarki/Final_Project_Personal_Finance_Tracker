@@ -23,11 +23,12 @@
         android:layout_marginBottom="20dp"
         android:background="#FFECB3"
         android:drawableLeft="@drawable/ic_search"
-        android:hint="Search by date"
+        android:hint="Search by date(month(for ex: may))"
         android:padding="10dp"
         android:textColorHint="@color/black">
-
     </AutoCompleteTextView>
+
+
 
     <ListView
         android:id="@+id/listdata"

@@ -122,9 +122,9 @@ public class searchdata extends AppCompatActivity {
                     ArrayList<String> listtype=new ArrayList<>();
                     for(DataSnapshot ds:snapshot.getChildren()){
                         Data data=ds.getValue(Data.class);
-                        //listtype.add(data.getType());
-                        String strIncome=String.valueOf(data.getAmount());
-                        listtype.add(strIncome+"\n"+data.getType()+"\n"+data.getNote()+"\n"+data.getDate());
+                        double amount = data.getAmount();
+                        String strType = data.getType();
+                        listtype.add("Amount: " + amount + "\nType: " + strType + "\nNote: " + data.getNote() + "\nDate: " + data.getDate());
                     }
 
                     ArrayAdapter adapter=new ArrayAdapter(getApplicationContext(), android.R.layout.simple_list_item_1,listtype);

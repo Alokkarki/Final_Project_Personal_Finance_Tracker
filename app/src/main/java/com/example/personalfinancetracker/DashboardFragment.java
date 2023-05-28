@@ -121,36 +121,6 @@ public class DashboardFragment extends Fragment {
         Rof=AnimationUtils.loadAnimation(getActivity(),R.anim.rotate_forward);
 
 
-//        barChart=myview.findViewById(R.id.bar_chart);
-//        ValueEventListener event2=new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                getBarEntries(snapshot);
-//                barDataSet=new BarDataSet(barEntries,"Expenses");
-//                barData=new BarData(barDataSet);
-//                barChart.setData(barData);
-//                barChart.getDescription().setText("Expenses Per Day");
-//                XAxis xval=barChart.getXAxis();
-//                xval.setDrawLabels(true);
-//                xval.setValueFormatter(new IndexAxisValueFormatter(date));
-//                barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-//                barDataSet.setValueTextColor(Color.BLACK);
-//                barDataSet.setValueTextSize(16f);
-//                barDataSet.notifyDataSetChanged();
-//                barChart.notifyDataSetChanged();
-//                barChart.invalidate();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        };
-//        mExpenseDatabase.addListenerForSingleValueEvent(event2);
-
-
-
-
         fab_main.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -577,6 +547,8 @@ public class DashboardFragment extends Fragment {
             mDate.setText(date);
         }
     }
+
+
 
 
 }

@@ -1,19 +1,15 @@
 package com.example.personalfinancetracker;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,7 +28,8 @@ public class editprofile extends AppCompatActivity {
     private FirebaseAuth mAuth;
     EditText nameEditText, phoneNumberEditText;
     TextView dobTextView;
-    CheckBox genderCheckBox;
+    RadioGroup genderRadioGroup;
+
     Button saveButton, cancelButton;
     DatePickerDialog datePickerDialog;
     String selectedDate;
@@ -47,7 +44,7 @@ public class editprofile extends AppCompatActivity {
         nameEditText = findViewById(R.id.editText_name);
         phoneNumberEditText = findViewById(R.id.editText_phone);
         dobTextView = findViewById(R.id.textView_dob);
-        genderCheckBox = findViewById(R.id.checkbox_gender);
+        genderRadioGroup = findViewById(R.id.radioGroup_gender);
         saveButton = findViewById(R.id.btn_save);
         cancelButton = findViewById(R.id.btn_cancel);
 
@@ -65,7 +62,11 @@ public class editprofile extends AppCompatActivity {
 
                     nameEditText.setText(name);
                     phoneNumberEditText.setText(phoneNumber);
-                    genderCheckBox.setChecked(gender.equals("Male"));
+                    if (gender.equals("Male")) {
+                        genderRadioGroup.check(R.id.radioButton_male);
+                    } else {
+                        genderRadioGroup.check(R.id.radioButton_female);
+                    }
                     dobTextView.setText(dob);
                 }
             }
@@ -119,7 +120,7 @@ public class editprofile extends AppCompatActivity {
     private void saveProfileData() {
         String name = nameEditText.getText().toString().trim();
         String phoneNumber = phoneNumberEditText.getText().toString().trim();
-        boolean isMale = genderCheckBox.isChecked();
+        String gender = genderRadioGroup.getCheckedRadioButtonId() == R.id.radioButton_male ? "Male" : "Female";
 
         if (TextUtils.isEmpty(name)) {
             nameEditText.setError("Please enter your name");
@@ -136,7 +137,7 @@ public class editprofile extends AppCompatActivity {
         String userId = mAuth.getCurrentUser().getUid();
         usersDataRef.child(userId).child("name").setValue(name);
         usersDataRef.child(userId).child("phoneNumber").setValue(phoneNumber);
-        usersDataRef.child(userId).child("gender").setValue(isMale ? "Male" : "Female");
+        usersDataRef.child(userId).child("gender").setValue(gender);
         usersDataRef.child(userId).child("dob").setValue(selectedDate)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

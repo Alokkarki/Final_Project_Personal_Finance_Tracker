@@ -20,7 +20,6 @@
             android:layout_width="251dp"
             android:layout_height="219dp"
             android:layout_marginLeft="40dp"
-            android:layout_marginTop="40dp"
             android:layout_marginRight="40dp"
             android:src="@drawable/register_user" />
 
@@ -28,27 +27,60 @@
             android:id="@+id/editText_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name" />
+            android:hint="Name"
+            android:layout_margin="10dp"/>
 
         <EditText
             android:id="@+id/editText_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Phone Number" />
+            android:hint="Phone Number"
+            android:layout_margin="10dp"/>
 
         <TextView
             android:id="@+id/textView_dob"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Date of Birth"
+            android:textSize="20dp"
+            android:layout_margin="10dp"
+            android:textColor="@color/black"
             android:clickable="true"
             android:focusable="true" />
 
-        <CheckBox
-            android:id="@+id/checkbox_gender"
-            android:layout_width="wrap_content"
+        <TextView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Male" />
+            android:text="Select Gender:"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:paddingTop="10dp"
+            android:layout_margin="10dp"
+            />
+
+        <RadioGroup
+            android:id="@+id/radioGroup_gender"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            android:gravity="center">
+
+            <RadioButton
+                android:id="@+id/radioButton_male"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Male"
+                android:layout_marginLeft="20dp"/>
+
+            <RadioButton
+                android:id="@+id/radioButton_female"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Female"
+                android:layout_marginLeft="50dp"/>
+
+        </RadioGroup>
 
         <Button
             android:id="@+id/btn_save"

@@ -63,6 +63,8 @@ public class first_home_page extends AppCompatActivity implements NavigationView
 
         setSupportActionBar(toolbar);
 
+
+
         bottomNavigationView=findViewById(R.id.bottomNavigationbar);
         frameLayout=findViewById(R.id.main_frame);
         DrawerLayout drawerLayout=findViewById(R.id.drawer_layout);
@@ -76,13 +78,11 @@ public class first_home_page extends AppCompatActivity implements NavigationView
         navigationView.setNavigationItemSelectedListener(this);
 
         View headerView = navigationView.getHeaderView(0);
-        TextView email = headerView.findViewById(R.id.user_email);
 
         dashboardFragment=new DashboardFragment();
         incomeFragment=new IncomeFragment();
         expenseFragment=new ExpenseFragment();
         setFragment(dashboardFragment);
-
 
         mAuth=FirebaseAuth.getInstance();
         FirebaseUser mUser=mAuth.getCurrentUser();
@@ -91,12 +91,15 @@ public class first_home_page extends AppCompatActivity implements NavigationView
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String userEmail = dataSnapshot.child("Email").getValue(String.class);
-                email.setText(userEmail);
+                String userName = dataSnapshot.child("Name").getValue(String.class);
+                TextView name = headerView.findViewById(R.id.user_name);
+                name.setText(userName);
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {}
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle error
+            }
         };
         mUserInfoDatabase.addListenerForSingleValueEvent(valueEventListener);
 
@@ -115,22 +118,12 @@ public class first_home_page extends AppCompatActivity implements NavigationView
                         bottomNavigationView.setItemBackgroundResource(R.color.light_green);
                         return true;
 
-//                    case R.id.income_search:
-//                        Intent intent=new Intent(getApplicationContext(),searchdata.class);
-//                        startActivity(intent);
-//                        bottomNavigationView.setItemBackgroundResource(R.color.light_red);
-//                        return true;
 
                     case R.id.expense:
                         setFragment(expenseFragment);
                         bottomNavigationView.setItemBackgroundResource(R.color.light_red);
                         return true;
 
-//                    case R.id.expense_search:
-//                        Intent intent1=new Intent(getApplicationContext(),searchdata2.class);
-//                        startActivity(intent1);
-//                        bottomNavigationView.setItemBackgroundResource(R.color.light_red);
-//                        return true;
 
                     default:
                         return false;
@@ -211,10 +204,6 @@ public class first_home_page extends AppCompatActivity implements NavigationView
                 startActivity(intent_expt);
                 break;
 
-//            case R.id.income_tax_emi:
-//                Intent intent3=new Intent(getApplicationContext(),inc_emi.class);
-//                startActivity(intent3);
-//                break;
 
             case R.id.calculator:
                 int d=0;
@@ -252,10 +241,6 @@ public class first_home_page extends AppCompatActivity implements NavigationView
                 }
                 break;
 
-//            case R.id.feedback:
-//                Intent intent2=new Intent(getApplicationContext(),feedback.class);
-//                startActivity(intent2);
-//                break;
 
             case R.id.about:
                 Intent intent4=new Intent(getApplicationContext(),about.class);
@@ -302,4 +287,6 @@ public class first_home_page extends AppCompatActivity implements NavigationView
         displaySelectedListener(item.getItemId());
         return true;
     }
+
+
 }

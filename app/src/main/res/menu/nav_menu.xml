@@ -50,6 +50,11 @@
     <item android:id="@+id/about"
         android:title="About"
         android:icon="@drawable/ic_about">
+    </item>
+
+    <item android:id="@+id/feedback"
+        android:title="Feedback"
+        android:icon="@drawable/ic_star_rate">
 
     </item>
     <item android:id="@+id/logout"

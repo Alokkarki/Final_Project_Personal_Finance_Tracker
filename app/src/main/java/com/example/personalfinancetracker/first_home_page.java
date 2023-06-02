@@ -247,6 +247,11 @@ public class first_home_page extends AppCompatActivity implements NavigationView
                 startActivity(intent4);
                 break;
 
+            case R.id.feedback:
+                Intent intent=new Intent(getApplicationContext(),feedback.class);
+                startActivity(intent);
+                break;
+
             case R.id.logout:
                 logout();
                 break;

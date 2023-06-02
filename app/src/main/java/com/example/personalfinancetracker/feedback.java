@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
@@ -27,6 +28,8 @@ public class feedback extends AppCompatActivity {
     RatingBar ratingBar;
     Button btnSubmit;
 
+    EditText commentEditText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,28 +45,30 @@ public class feedback extends AppCompatActivity {
 
         ratingBar=findViewById(R.id.rating_bar);
         btnSubmit=findViewById(R.id.rating_btn);
+        commentEditText = findViewById(R.id.comment_edt);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                s1=String.valueOf(ratingBar.getRating());
-                HashMap hashMap=new HashMap();
-                hashMap.put("Rating",s1);
+                s1 = String.valueOf(ratingBar.getRating());
+                String comment = commentEditText.getText().toString().trim();
 
-                if(ratingBar.getRating()!=0.0)
-                {
+                HashMap<String, Object> hashMap = new HashMap<>();
+                hashMap.put("Rating", s1);
+                hashMap.put("Comment", comment);
+
+                if (ratingBar.getRating() != 0.0) {
                     String id = mFeedbackDatabase.push().getKey();
-                    mFeedbackDatabase.child("Feedback").updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener() {
+                    mFeedbackDatabase.child(id).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
-                        public void onSuccess(Object o) {
-                            Toast.makeText(getApplicationContext(),"Thanks for Rating us..",Toast.LENGTH_SHORT).show();
+                        public void onSuccess(Void aVoid) {
+                            Toast.makeText(getApplicationContext(), "Thanks for Rating and Commenting!", Toast.LENGTH_SHORT).show();
                             ratingBar.setRating(0);
+                            commentEditText.setText("");
                         }
                     });
-                }
-                else
-                {
-                    Toast.makeText(getApplicationContext(),"Please Rate us!",Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "Please Rate us!", Toast.LENGTH_SHORT).show();
                 }
             }
         });

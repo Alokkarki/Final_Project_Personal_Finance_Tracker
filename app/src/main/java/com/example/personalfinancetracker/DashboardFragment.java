@@ -2,10 +2,17 @@ package com.example.personalfinancetracker;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -43,16 +50,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfWriter;
 
 
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
-
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 
 
@@ -104,6 +120,8 @@ public class DashboardFragment extends Fragment {
 
 
 
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -121,6 +139,9 @@ public class DashboardFragment extends Fragment {
             mIncomeDatabase = FirebaseDatabase.getInstance().getReference().child("IncomeData").child(uid);
             mExpenseDatabase = FirebaseDatabase.getInstance().getReference().child("ExpenseData").child(uid);
         }
+
+
+
 
 
         fab_main=myview.findViewById(R.id.fb_main_lus_btn);
@@ -316,10 +337,10 @@ public class DashboardFragment extends Fragment {
 
 
 
-        
+
         return myview;
 
-        
+
     }
 
     private void ftAnimation(){
@@ -376,6 +397,8 @@ public class DashboardFragment extends Fragment {
                 expenseDataInsert();
             }
         });
+
+
 
 
     }
@@ -633,7 +656,4 @@ public class DashboardFragment extends Fragment {
             }
         }
     }
-
-
-
 }

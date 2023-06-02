@@ -44,7 +44,8 @@ dependencies {
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
-    implementation 'com.itextpdf:itextpdf:5.5.13.2'
+    implementation 'com.itextpdf:itextg:5.5.10'
+
 
 
 

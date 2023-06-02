@@ -59,6 +59,15 @@
 
     </androidx.cardview.widget.CardView>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:textColor="@color/light_red"
+        android:gravity="center"
+        android:textStyle="italic"
+        android:text="&quot;Beware of little expenses; a small leak will sink a great ship.&quot;"
+        android:textAppearance="?android:textAppearanceLarge"></TextView>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_id_expense"
         android:layout_width="match_parent"

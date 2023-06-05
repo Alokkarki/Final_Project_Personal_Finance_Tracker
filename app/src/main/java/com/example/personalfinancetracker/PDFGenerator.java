@@ -105,11 +105,11 @@ public class PDFGenerator {
         Document document = new Document();
 
         // Set the file path for the PDF
-        String filePath = Environment.getExternalStorageDirectory() + "/my_pdf.pdf";
+        File pdfFile = new File(Environment.getExternalStorageDirectory(), "my_pdf.pdf");
 
         try {
             // Create a PdfWriter instance to write the document to a file
-            PdfWriter.getInstance(document, new FileOutputStream(filePath));
+            PdfWriter.getInstance(document, new FileOutputStream(pdfFile));
 
             // Open the document
             document.open();

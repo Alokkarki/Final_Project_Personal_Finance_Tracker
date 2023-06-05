@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class resetpassword extends AppCompatActivity {
     private EditText passwordEmail;
@@ -28,11 +29,9 @@ public class resetpassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_resetpassword);
 
-        passwordEmail=(EditText)findViewById(R.id.pass_email);
-        resetpassword=(Button)findViewById(R.id.reset_pass);
-        firebaseAuth= FirebaseAuth.getInstance();
-
-        // ...
+        passwordEmail = findViewById(R.id.pass_email);
+        resetpassword = findViewById(R.id.reset_pass);
+        firebaseAuth = FirebaseAuth.getInstance();
 
         resetpassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,12 +39,18 @@ public class resetpassword extends AppCompatActivity {
                 String useremail = passwordEmail.getText().toString().trim();
 
                 if (useremail.equals("")) {
-                    passwordEmail.setError("Email Required...", null);
+                    passwordEmail.setError("Email Required...");
                     return;
                 } else if (!isValidEmail(useremail)) {
-                    passwordEmail.setError("Invalid Email Address", null);
+                    passwordEmail.setError("Invalid Email Address");
                     return;
                 } else {
+                    FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+                    if (currentUser != null && !currentUser.getEmail().equals(useremail)) {
+                        Toast.makeText(resetpassword.this, "Please provide the email address that is linked with your account.", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
                     firebaseAuth.sendPasswordResetEmail(useremail).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
@@ -62,9 +67,6 @@ public class resetpassword extends AppCompatActivity {
                 }
             }
         });
-
-
-
     }
 
     private boolean isValidEmail(CharSequence target) {

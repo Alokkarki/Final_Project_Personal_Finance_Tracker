@@ -17,7 +17,8 @@ public class about extends AppCompatActivity {
         setContentView(R.layout.activity_about);
 
         vname=findViewById(R.id.vname);
-        vname.setText("v"+String.valueOf(BuildConfig.VERSION_NAME));
+        vname.setText("The purpose of a personal finance tracker is to provide individuals with a " +
+                "comprehensive platform to manage their personal finances effectively. ");
 
         ImageView back_arrow=findViewById(R.id.back);
         back_arrow.setOnClickListener(new View.OnClickListener() {
